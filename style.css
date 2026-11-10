@@ -206,3 +206,8 @@ select {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+.container {
+    width: 100%;
+    text-align: center;
+}
