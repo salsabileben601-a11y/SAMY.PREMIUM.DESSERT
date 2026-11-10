@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<HTml lang="en">
+
+<head>
+    <title>CONFIRM ORDER</title>
+    <meta name="viewport" content="width=device-width , initial-scale=1.0">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body style="background-color:black ;">
+    <div class="container">
+        <h1>COMPLETE YOUR ORDER</h1>
+        <hr class="line">
+        <img id="productimg" class="pro-img" src="">
+        <div id="productprice" class="pro-price"></div>
+        <form id="form">
+            <div class="info">
+                <h2 class="hh2">full name</h2>
+                <input type="text" id="fullname" placeholder="enter your name" required>
+            </div>
+            <div class="info">
+                <h2 class="hh2">phone number</h2>
+                <input type="text" id="phonenumber" placeholder="enter your number" required>
+            </div>
+
+
+            <div class="options">
+                <h2 class="hh2">wilaya</h2>
+                <select name="wilaya" id="wilaya" required onchange="updateshipping()">
+                    <option value="BATNA">BATNA</option>
+                    <option value="BISKRA">BISKRA</option>
+                    <option value="ORAN">ORAN</option>
+                    <option value="ALGEIRS">ALGEIRS</option>
+                    <option value="SETIF">SETIF</option>
+
+                </select>
+
+
+            </div>
+            <div class="options">
+                <h2 class="hh2">delivery</h2>
+                <select name="delivery" id="delivery" required onchange="updateshipping()">
+                    <option value="HOME">HOME</option>
+                    <option value="OFFICE">OFFICE</option>
+
+                </select>
+
+            </div>
+            <div class="delprice">
+                delivery price : <strong id="shippingprice"> 0 DA </strong>
+            </div>
+            <div class="total">total price : <strong id="totalprice">0 DA </strong>
+            </div>
+            <button type="submit" class="submit">CONFIRM YOUR ORDER</button>
+        </form>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const imgSrc = urlParams.get('img')
+        const baseprice = parseInt(urlParams.get('price')) || 0;
+
+        document.getElementById('productimg').src = imgSrc;
+        document.getElementById('productprice').innerText = baseprice + "DA";
+        document.getElementById('totalprice').innerText = baseprice + "DA";
+
+        const rates = {
+            ORAN: { HOME: 700, OFFICE: 600 },
+            BATNA: { HOME: 600, OFFICE: 500 },
+            SETIF: { HOME: 700, OFFICE: 600 },
+            BISKRA: { HOME: 600, OFFICE: 500 },
+            ALGEIRS: { HOME: 700, OFFICE: 600 }
+        };
+
+
+        function updateshipping() {
+            const wilaya = document.getElementById('wilaya').value;
+            const deliverytype = document.getElementById('delivery').value;
+
+
+            if (!wilaya) {
+                document.getElementById('shippingprice').innerText = "0 DA";
+                document.getElementById('totalprice').innerText = baseprice + "DA";
+                return;
+            }
+            const shippCost = rates[wilaya][deliverytype];
+            const total = baseprice + shippCost;
+
+            document.getElementById('shippingprice').innerText = shippCost + " DA";
+            document.getElementById('totalprice').innerText = total + " DA";
+        }
+        document.getElementById('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+
+            const fullname = document.getElementById('fullname').value;
+            const phone = document.getElementById('phonenumber').value;
+            const wilaya = document.getElementById('wilaya').options[document.getElementById('wilaya').selectedIndex].text;
+            const delivery = document.getElementById('delivery').options[document.getElementById('delivery').selectedIndex].text;
+            const totalPrice = document.getElementById('totalprice').innerText;
+            const productimgSrc = document.getElementById('productimg').src;
+        });
+
+
+    </script>
+</body>
+
+</HTml>
